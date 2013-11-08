@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="bpmis.pxc.system.pojo.Role" table="t_role" lazy="false">
+		<id name="id" column="id" type="java.lang.Integer">
+		  <generator class="identity" />
+		</id>	   
+		<property name="rolename" length="50"  column="rolename" type="java.lang.String"></property>
+		<property name="remark" length="500"  column="remark" type="java.lang.String"></property>
+		
+        </class>
+</hibernate-mapping>

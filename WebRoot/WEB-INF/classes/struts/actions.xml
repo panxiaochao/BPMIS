@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="user" namespace="/user" extends="struts-default">
+    	<action name="userlogin*" class="userController" method="{1}">
+            <result>index.jsp</result>
+        </action>
+        <!-- Add actions here 
+        <action name="main!*" method="{1}" class="cn.zj.pubinfo.pets.www.MainAction">
+            <result>/template/{1}.jsp</result>
+            <result name="logout" type="redirectAction">
+                <param name="actionName">main</param>
+                <param name="namespace">/sys</param>
+            </result>
+            <result name="logoutSSO">/template/sys/logoutSSO.jsp</result>
+            <result name="json" type="json">
+		    	<param name="root">menu</param>
+		    	<param name="ignoreHierarchy">false</param>
+		    </result>
+        </action>-->
+		
+        
+    </package>
+    
+    
+    
+    
+    
+    
+    
+    <!-- Add actions here 
+    <package name="manage" namespace="/manage" extends="pets-default">
+    	
+  
+        <action name="user!*" method="{1}" class="cn.zj.pubinfo.pets.www.UserAction">
+            <result name="success">/template/user/{1}.jsp</result>
+        </action>
+
+  
+        <action name="area!*" method="{1}" class="cn.zj.pubinfo.pets.www.AreaAction">
+            <result name="success">/template/area/{1}.jsp</result>
+        </action>
+
+  
+        <action name="pet!*" method="{1}" class="cn.zj.pubinfo.pets.www.PetAction">
+            <result name="success">/template/pet/{1}.jsp</result>
+        </action>
+
+  
+        <action name="food!*" method="{1}" class="cn.zj.pubinfo.pets.www.FoodAction">
+            <result name="success">/template/food/{1}.jsp</result>
+        </action>
+
+    </package>-->
+</struts>

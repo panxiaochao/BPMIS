@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="bpmis.pxc.system.pojo.TBUser" table="t_user" lazy="false">
+		<id name="id" column="id" type="java.lang.Integer">
+		  <generator class="identity" />
+		</id>	   
+		<property name="username" length="20"  column="username" type="java.lang.String"></property>
+		<property name="pwd" length="32"  column="pwd" type="java.lang.String"></property>
+		<property name="sex" length="50"  column="sex" type="java.lang.String"></property>
+		<property name="email" length="20"  column="email" type="java.lang.String"></property>
+		<property name="tel" length="20"  column="tel" type="java.lang.String"></property>		
+		<property name="qq" length="20"  column="qq" type="java.lang.String"></property>
+		<property name="regtime" length="20"  column="regtime" type="java.lang.String"></property>
+		<property name="remark" length="500"  column="remark" type="java.lang.String"></property>
+        </class>
+</hibernate-mapping>

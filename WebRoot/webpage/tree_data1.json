@@ -1,0 +1,64 @@
+[{
+	"id":1,
+	"text":"根目录",
+	"children":[{
+		"id":11,
+		"text":"系统设置",
+		"children":[{
+			"id":110,
+			"text":"用户管理",
+			"attributes":{  
+            	"url":"webpage/user/user_list.jsp"  
+        	} 
+		},{
+			"id":111,
+			"text":"角色管理",
+			"attributes":{  
+            	"url":"webpage/role/role_list.jsp"  
+        	} 
+		},{
+			"id":112,
+			"text":"菜单管理",
+			"attributes":{  
+            	"url":"webpage/function/function_list.jsp"  
+        	} 
+		},{
+			"id":113,
+			"text":"你妹",
+			"attributes":{  
+            	"url":"readme.txt"  
+        	} 
+		}]
+	},{
+		"id":12,
+		"text":"角色管理",
+		"state":"closed",
+		"children":[{
+			"id":121,
+			"text":"Intel"
+		},{
+			"id":122,
+			"text":"Java",
+			"attributes":{
+				"p1":"Custom Attribute1",
+				"p2":"Custom Attribute2"
+			}
+		},{
+			"id":123,
+			"text":"Microsoft Office"
+		},{
+			"id":124,
+			"text":"Games",
+			"checked":true
+		}]
+	},{
+		"id":13,
+		"text":"index.html"
+	},{
+		"id":14,
+		"text":"about.html"
+	},{
+		"id":15,
+		"text":"welcome.html"
+	}]
+}]

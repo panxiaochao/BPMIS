@@ -1,0 +1,26 @@
+/*!
+ * customcss.css
+ *
+ * Copyright 2013 Pxc, Inc
+ */
+body {padding-top: 60px;}	
+#left,#right,#openClose{float:left}
+#openClose{width:14px;cursor:pointer; display:block; margin:0 3px; }
+#openClose,#openClose.close{	
+	background: #FDFDFD url("../images/openclose.png") no-repeat -25px center;
+	background-color:#ddd;
+	}
+#openClose.close{background-position:5px center}
+
+#content{
+	min-height:550px;
+}
+
+#footer{
+	margin-top:20px;
+	padding-top:10px;
+	font-size: 95%;
+	text-align: center;
+	border-top: 2px solid #0663A2;
+	
+}

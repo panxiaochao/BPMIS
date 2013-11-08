@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    
+	<constant name="struts.objectFactory" value="spring" />
+   
+    <constant name="struts.devMode" value="true" />
+    <!-- constant name="struts.action.excludePattern" value=".*unfiltered.*,.*\\.nofilter"/ -->
+	<!--  
+    <package name="pets-default" namespace="/" extends="struts-json-default">
+        <default-action-ref name="index" />
+        
+        <global-results>
+			<result name="error" type="dispatcher">/template/sys/error.jsp</result>
+			<result name="error-json" type="json">
+		    	<param name="ignoreHierarchy">false</param>
+		    	<param name="includeProperties">exception\.code,exception\.message</param>
+		    </result>
+		    <result name="json" type="json"><param name="includeProperties">1</param></result>
+
+		    <result name="ok-json" type="json">
+		    	<param name="ignoreHierarchy">false</param>
+		    	<param name="includeProperties">status</param>
+		    </result>		    
+		    <result name="page-json" type="json">
+		    	<param name="root">page</param>
+		    	<param name="ignoreHierarchy">false</param>
+		    </result>
+		    <result name="save-json" type="json">
+		    	<param name="ignoreHierarchy">false</param>
+		    	<param name="includeProperties">id,uuid</param>
+		    </result>
+            <result name="tree-json" type="json">
+		    	<param name="ignoreHierarchy">false</param>
+		    	<param name="includeProperties">^tree.*</param>
+		    </result>		    
+		</global-results>
+		<global-exception-mappings>
+		    <exception-mapping result="error" exception="java.lang.Throwable">/template/sys/error.jsp</exception-mapping>
+		</global-exception-mappings>
+		
+        <action name="index">
+            <result type="redirectAction">
+                <param name="actionName">main</param>
+                <param name="namespace">/sys</param>
+            </result>
+        </action>
+    </package>
+	-->
+    <!-- Add packages here 
+	<include file="struts/actions.xml"/>
+	-->
+	<include file="struts/actions.xml"/>
+	
+</struts>

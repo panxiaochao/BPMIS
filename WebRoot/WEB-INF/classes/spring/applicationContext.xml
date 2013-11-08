@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+           http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd"
+    >
+	<!-- 使用 annotation -->
+	<context:annotation-config />
+	<!--
+		自动扫描colltroller、dao和service包(自动注入) 使用 annotation
+		自动注册bean,并检查@Controller, @Service, @Repository注解已被注入
+	-->
+	<context:component-scan base-package="bpmis.pxc.system.controller.core" />
+	<context:component-scan base-package="bpmis.pxc.system.dao.impl" />
+	<context:component-scan base-package="bpmis.pxc.system.service.impl" />
+	
+	<bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->    
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />    
+	
+	<!-- 引入属性文件 -->
+	<context:property-placeholder location="classpath:properties/database.properties" />
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />			
+		<property name="username" value="${jdbc.username}" />			
+		<property name="password" value="${jdbc.password}" />			
+	</bean>
+
+	<!--定义事务的传播特性-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="logicDelete*" propagation="REQUIRED" />
+			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 
+		org.springframework.orm.hibernate4.LocalSessionFactoryBean
+		org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean
+	 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<!--
+			注解方式配置 
+		<property name="packagesToScan"> 
+			<list>
+				<value>bpmis.pxc.system.pojo</value> 
+			</list> 
+		</property>-->
+		
+		<!-- 配置映射文件
+		<property name="mappingResources">
+			<list>
+				<value>bpmis/pxc/system/pojo/hbm/TBUser.hbm.xml</value>
+			</list>
+		</property>-->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${jdbc.hibernate.dialect}</prop>
+				<prop key="hibernate.hbm2ddl.auto">none</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- 配置事物管理器，在*ServiceImpl里写@Transactional就可以启用事物管理 -->
+	<bean name="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+</beans>

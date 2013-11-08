@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Struts2Diagram version="2.0">
+  <package name="user" location="0,0" size="0,0">
+    <action name="userlogin*" location="0,0" size="0,0">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="index.jsp" />
+      </result>
+    </action>
+    <action name="main!*" location="0,0" size="0,0">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="{1}.jsp" />
+      </result>
+      <result name="logout" />
+      <result name="logoutSSO">
+        <resourceEdge source="logoutSSO" routing="0" target="logoutSSO.jsp" />
+      </result>
+      <result name="json" />
+    </action>
+  </package>
+  <package name="manage" location="235,620" size="525,315">
+    <action name="user!*" location="310,57" size="150,41">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="{1}.jsp" />
+      </result>
+    </action>
+    <action name="area!*" location="310,232" size="150,41">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="{1}.jsp" />
+      </result>
+    </action>
+    <action name="pet!*" location="65,232" size="150,41">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="{1}.jsp" />
+      </result>
+    </action>
+    <action name="food!*" location="65,127" size="150,41">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="{1}.jsp" />
+      </result>
+    </action>
+  </package>
+  <webResource name="main.jsp" path="/template/main.jsp" location="10,395" size="150,55" />
+  <webResource name="login.jsp" path="/template/sys/login.jsp" location="520,395" size="150,55" />
+  <webResource name="{1}.jsp" path="/template/{1}.jsp" location="503,220" size="150,55" />
+  <webResource name="logoutSSO.jsp" path="/template/sys/logoutSSO.jsp" location="228,10" size="150,55" />
+  <webResource name="{1}.jsp" path="/template/user/{1}.jsp" location="818,640" size="150,55" />
+  <webResource name="{1}.jsp" path="/template/area/{1}.jsp" location="818,815" size="150,55" />
+  <webResource name="{1}.jsp" path="/template/pet/{1}.jsp" location="296,990" size="150,55" />
+  <webResource name="{1}.jsp" path="/template/food/{1}.jsp" location="13,710" size="150,55" />
+  <webResource name="index.jsp" path="index.jsp" location="0,0" size="0,0" />
+</Struts2Diagram>
+

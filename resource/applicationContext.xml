@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+           http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd"
+    >
+	<!-- annotation -->
+	<context:annotation-config />
+	<context:component-scan base-package="bpmis.pxc.system.controller.core" />
+	<context:component-scan base-package="bpmis.pxc.system.dao.impl" />
+	<context:component-scan base-package="bpmis.pxc.system.service.impl" />
+	<!-- Spring MVC
+	<bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>	
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />  -->       
+
+	<!-- properties -->
+	<context:property-placeholder location="classpath:properties/database.properties" />
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />			
+		<property name="username" value="${jdbc.username}" />			
+		<property name="password" value="${jdbc.password}" />			
+	</bean>
+
+	<!--txAdvice
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="logicDelete*" propagation="REQUIRED" />
+			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+		</tx:attributes>
+	</tx:advice>-->
+	
+	<!-- 
+		org.springframework.orm.hibernate4.LocalSessionFactoryBean
+		org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean
+	 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>			
+		<property name="packagesToScan"> 
+			<list>
+				<value>bpmis.pxc.system.pojo</value> 
+			</list> 
+		</property>
+		
+		<!-- 
+		<property name="mappingResources">
+			<list>
+				<value>bpmis/pxc/system/pojo/hbm/TBUser.hbm.xml</value>
+			</list>
+		</property>-->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${jdbc.hibernate.dialect}</prop>
+				<prop key="hibernate.hbm2ddl.auto">none</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">false</prop>				
+        		<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop> 				
+			</props>
+		</property>
+	</bean>
+	<!--txAdvice>-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED" />			
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />			
+			<tx:method name="logicDelete*" propagation="REQUIRED" />
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="By*" propagation="REQUIRED" read-only="true" />			
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- aop -->  
+	<aop:config>  
+		<!-- 定义一个切入点 -->  
+		<aop:pointcut expression="execution (* bpmis.pxc.system.dao.impl.*.*(..))" id="services"/>  
+		<!-- 对切入点和事务的通知，进行适配 -->  
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="services"/>  
+	</aop:config>  
+	
+	<!-- transactionManager  -->
+	<bean name="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!-- import spring-mvc.xml -->
+	
+</beans>

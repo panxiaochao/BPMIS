@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="ssoExcludeUrlPattern" class="cn.zj.pubinfo.sso.client.util.UrlPattern">
+		<constructor-arg index="0">
+			<value>${sso.client.excludeUrls}</value>
+		</constructor-arg>
+	</bean>
+	
+    <bean
+            id="httpClient"
+            class="cn.zj.pubinfo.sso.client.util.HttpClient3FactoryBean">
+            <constructor-arg index="0" value="${sso.mode.dev}"/>
+    </bean>
+
+    <bean
+            id="proxyRetriever"
+            class="cn.zj.pubinfo.sso.client.proxy.SsoProxyRetriever">
+        <constructor-arg index="0" value="${sso.server.url}"/>
+        <constructor-arg index="1" ref="httpClient"/>
+    </bean>
+
+    <bean id="proxyGrantingTicketStorage"
+          class="cn.zj.pubinfo.sso.client.proxy.ProxyGrantingTicketStorageImpl"/>
+
+
+    <!-- final String ssoServerUrl, final boolean renew, final HttpClient httpClient, final Service proxyCallbackUrl, List proxyChains, boolean acceptAnyProxy, final ProxyGrantingTicketStorage proxyGrantingTicketStorage, final ProxyRetriever proxyRetriever -->
+    <bean
+            id="ticketValidator"
+            class="cn.zj.pubinfo.sso.client.validation.ProxyTicketValidator">
+        <constructor-arg index="0" value="${sso.server.url}"/>
+        <constructor-arg index="1" value="${sso.server.renew}"/>
+        <constructor-arg index="2" ref="httpClient"/>
+        <constructor-arg index="3">
+            <bean class="cn.zj.pubinfo.principal.SimpleService">
+                <constructor-arg index="0" value="${sso.client.proxyCallbackUrl}"/>
+                <constructor-arg index="1" value="${sso.client.siteCode}"/>
+            </bean>
+        </constructor-arg>
+        <constructor-arg index="4">
+            <list></list>
+        </constructor-arg>
+        <constructor-arg index="5" value="true"/>
+        <constructor-arg index="6" ref="proxyGrantingTicketStorage"/>
+        <constructor-arg index="7" ref="proxyRetriever"/>
+    </bean>
+
+    <bean
+            id="ssoHttpServletRequestWrapperFilter"
+            class="cn.zj.pubinfo.sso.client.web.filter.HttpServletRequestWrapperFilter"/>
+
+    <bean
+            id="ssoValidationFilter"
+            class="cn.zj.pubinfo.sso.client.web.filter.TicketValidationFilter">
+        <constructor-arg index="0" value="${sso.client.siteCode}"/>
+        <!-- serverName of client to construct serviceURL eg:"thisServer.myDomain.net" -->
+        <constructor-arg index="1" value="${sso.client.serverName}"/>
+        <!-- serviceUrl of client: either provide serverName or serviceUrl -->
+        <constructor-arg index="2">
+            <null/>
+        </constructor-arg>
+        <!-- ticketValidator implementation (defines protocol version to be used) -->
+        <constructor-arg index="3" ref="ticketValidator"/>
+        <constructor-arg index="4" ref="ssoExcludeUrlPattern"/>
+    </bean>
+
+    <bean
+            id="ssoAuthenticationFilter"
+            class="cn.zj.pubinfo.sso.client.web.filter.AuthenticationFilter">
+        <constructor-arg index="0" value="${sso.client.siteCode}"/>
+        <!-- serverName of client to construct serviceURL eg:"thisServer.myDomain.net" -->
+        <constructor-arg index="1" value="${sso.client.serverName}"/>
+        <!-- serviceUrl of client: either provide serverName or serviceUrl -->
+        <constructor-arg index="2">
+            <null/>
+        </constructor-arg>
+        <!-- SSO server loginUrl -->
+        <constructor-arg index="3" value="${sso.server.url}login.pi"/>
+        <!-- proxyCallbackUrl -->
+        <constructor-arg index="4" value="${sso.client.proxyCallbackUrl}"/>
+        <!-- renew? -->
+        <constructor-arg index="5" value="${sso.server.renew}"/>
+        <!-- gateway? -->
+        <constructor-arg index="6" value="${sso.server.gateway}"/>
+        <constructor-arg index="7" ref="ssoExcludeUrlPattern"/>
+    </bean>
+
+</beans>
