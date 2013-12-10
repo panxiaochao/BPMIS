@@ -59,7 +59,7 @@ function save(){
 	//操作父页面tab重新刷一次
 	window.parent.$('#winForm').window('close');	
 	//window.parent.$('#tt').datagrid('reload'); 
-	//window.parent.reload(); 
+	window.parent.reload(); 
 	window.parent.$.messager.alert('信息', "添加成功！");
 	//window.parent.document.getElementById("pframe").src="";
 }

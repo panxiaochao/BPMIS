@@ -228,7 +228,7 @@ public class RoleController implements BaseController {
 		List<?> list = userService
 				.findByQueryString("from Function where parentid ='root'");
 		Map<String, Integer> maptree = HqlQuery.getParmsMaps();
-		maptree.put("role.id", oConvertUtils.getInt("20"));
+		maptree.put("role.id", oConvertUtils.getInt(roleid));
 		List<?> roleUserList = userService.ByCrifindQuery(TBRoleFunction.class,
 				maptree);
 		List tree = new ArrayList();
@@ -250,6 +250,8 @@ public class RoleController implements BaseController {
 						ComboTree chtree = new ComboTree();
 						chtree.setId(oConvertUtils.getString(chfun.getId()));
 						chtree.setText(chfun.getNodename());
+						if (comparefun(chfun, roleUserList))
+							chtree.setChecked(true);
 						temp.add(chtree);
 					}
 					cbtree.setChildren(temp);
@@ -312,6 +314,10 @@ public class RoleController implements BaseController {
 		}
 		// ---|
 		String roleid = request.getParameter("roleid");
+		if (roleid.equals("")) {
+			ajx.setMsg("寻找不到角色ID，请刷新页面！");
+			return ajx;
+		}
 		Role role = (Role) userService.getClass(Role.class, roleid);
 		// 先删除关联表，更新
 		delRoleFunction(role);

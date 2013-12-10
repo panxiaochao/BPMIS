@@ -84,9 +84,9 @@ $(function() {
 </div>
 
 <div id="win" iconCls="icon-add" title=" 添加用户" style="overflow:hidden;">  
- <iframe scrolling="yes" frameborder="0"  src="useradd.html" style="width:100%;height:100%;"></iframe>   
+ <iframe scrolling="yes" frameborder="0"  src="" style="width:100%;height:100%;"></iframe>   
 </div>  
-
+<input type="hidden" id="selectValue" name="selectValue" value="" />
 <script type="text/javascript">
 document.getElementById("pframe").src="";
 function reload(){
@@ -156,6 +156,8 @@ function format(val, row){
 }
 
 function getAuth(id){
+	var row = dataGrid.datagrid('getSelected');
+	$("#selectValue").val(row.id);
 	$('#trb').show();
 	$.messager.progress({
 		title : '提示',
@@ -170,6 +172,7 @@ function getAuth(id){
 	});
 }
 function tijiao(){
+	var selsctid = $("#selectValue").val();
 	var node = $('#function_tree').tree('getChecked');  
     var nodes = "";  
     for(var i=0;i<node.length;i++){  
@@ -179,7 +182,21 @@ function tijiao(){
 	if(nodes == ""){
 		$.messager.alert('提示', "没有选择，不用提交！", 'info');
 	}else{
-		alert(nodes)  
+		var url = "<%=basePath %>roleController.do?setRoleAuthority";	
+		$.messager.confirm('提示', '您确定要保存当前资源？', function(b) {
+				if (b) {
+					$.messager.progress({
+						title : '提示',
+						text : '数据处理中，请稍后....'
+					});
+					$.post( url, {id: nodes, roleid: selsctid}, function(data) {
+						if (data.success) {
+							$.messager.progress('close');
+							$.messager.alert('提示', data.msg, 'info');
+						}						
+					}, 'json');
+				}
+			})  
 	}	
 }
 </script>
